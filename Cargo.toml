@@ -1,0 +1,8 @@
+[package]
+name = "towerdefence-rs"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+bevy = "0.13.0"
+priority-queue = "2.0.2"
