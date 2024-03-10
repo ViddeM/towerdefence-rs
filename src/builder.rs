@@ -1,10 +1,14 @@
 use bevy::prelude::*;
 
-use crate::map::{Map, MapVisuals, TileType, TileVisuals};
+use crate::{
+    map::{Map, MapVisuals, TileType, TileVisuals},
+    wave::Waves,
+};
 
 pub fn tile_build_system(
     mut map_query: Query<&mut Map>,
     mut tiles_query: Query<(&TileVisuals, &mut Handle<ColorMaterial>)>,
+    waves_query: Query<&Waves>,
     map_visuals_query: Query<&MapVisuals>,
     mouse_buttons: Res<ButtonInput<MouseButton>>,
     camera_query: Query<(&Camera, &GlobalTransform)>,
@@ -36,6 +40,12 @@ pub fn tile_build_system(
     }
 
     if mouse_buttons.just_pressed(MouseButton::Left) {
+        let waves = waves_query.single();
+        if waves.is_active() {
+            warn!("Cannot build whilst a wave is active");
+            return;
+        }
+
         let tile = map.tiles.get_mut(tile_y).unwrap().get_mut(tile_x).unwrap();
         if tile.tile_type != TileType::Empty {
             return;

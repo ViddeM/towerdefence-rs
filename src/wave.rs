@@ -6,6 +6,7 @@ use bevy::prelude::*;
 pub struct Waves {
     active_wave: Option<Wave>,
     previous_waves: Vec<Wave>,
+    time_since_last_wave_spawned: f32,
 }
 
 pub struct Wave {
@@ -51,11 +52,18 @@ impl Waves {
 
         self.previous_waves.push(wave);
     }
+
+    pub fn is_active(&self) -> bool {
+        return self.active_wave.is_some();
+    }
 }
 
 pub fn waves_setup(mut commands: Commands) {
     commands.spawn(Waves {
         active_wave: None,
         previous_waves: vec![],
+        time_since_last_wave_spawned: 0.,
     });
 }
+
+pub fn wave_spawner() {}

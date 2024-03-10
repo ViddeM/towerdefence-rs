@@ -7,6 +7,9 @@ use bevy::{
 
 use crate::utils::dijkstra::{Pathfind, Vertex};
 
+const WIDTH: usize = 5;
+const HEIGHT: usize = 5;
+
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum TileType {
     Empty,
@@ -100,9 +103,6 @@ pub struct TileVisuals {
     pub x: usize,
     pub y: usize,
 }
-
-const WIDTH: usize = 17;
-const HEIGHT: usize = 17;
 
 pub fn map_setup(
     mut commands: Commands,

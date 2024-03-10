@@ -10,14 +10,9 @@ pub trait Pathfind<Node: Vertex + Hash + Eq> {
         // Because we need a min-queue and this priority queue is a max-queue we use the negative distance
         let mut queue = PriorityQueue::with_capacity(verticies.len());
 
-        for vertex in verticies.iter() {
-            let id = vertex.get_id();
-            let prio = if id == start.get_id() { 0 } else { i64::MIN };
-
-            queue.push(vertex, prio);
-        }
-
         let end_id = end.get_id();
+
+        queue.push(start, 0);
 
         'main_loop: loop {
             let Some((u, dist)) = queue.pop() else {
@@ -25,7 +20,7 @@ pub trait Pathfind<Node: Vertex + Hash + Eq> {
             };
 
             let curr_id = u.get_id();
-            for neighbour in self.get_neighbours(u) {
+            for neighbour in self.get_neighbours(&u) {
                 if prev.contains_key(&neighbour.get_id()) {
                     continue;
                 }
@@ -36,7 +31,7 @@ pub trait Pathfind<Node: Vertex + Hash + Eq> {
                     break 'main_loop;
                 }
 
-                queue.change_priority(&neighbour, dist - 1);
+                queue.push(neighbour, dist - 1);
             }
         }
 
