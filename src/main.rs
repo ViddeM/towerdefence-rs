@@ -6,7 +6,7 @@ use bevy::{
 use builder::tile_build_system;
 use map::map_setup;
 use ui::{button_system, setup_ui};
-use wave::waves_setup;
+use wave::{move_enemies, wave_spawner, waves_setup};
 
 pub mod builder;
 pub mod map;
@@ -33,6 +33,9 @@ fn main() {
         ))
         .insert_resource(ClearColor(Color::BLACK))
         .add_systems(Startup, (map_setup.before(setup_ui), setup_ui, waves_setup))
-        .add_systems(Update, (tile_build_system, button_system))
+        .add_systems(
+            Update,
+            (tile_build_system, button_system, wave_spawner, move_enemies),
+        )
         .run();
 }
